@@ -2,168 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fruit Scroll Prototype</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fruit Scroll Effect</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     html, body {
       height: 100%;
       scroll-behavior: smooth;
       overflow-x: hidden;
       font-family: 'Kadwa', sans-serif;
-      background-color: #000;
+      background: #fff;
     }
-    section {
-      width: 100vw;
+
+    .frame {
       height: 100vh;
+      width: 100%;
       position: relative;
-      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 1s ease, opacity 1s ease;
+      will-change: transform, opacity;
     }
-    .background {
+
+    /* Overlay (optional) */
+    .overlay {
       position: absolute;
-      width: 150%;
-      height: 150%;
-      top: -25%;
-      left: -25%;
-      background: radial-gradient(circle, #CA9FF1 34%, #9F3CD8 100%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.05);
       z-index: 1;
     }
-    .background.green {
-      background: radial-gradient(circle, #BAFFB5 34%, #3AED4C 100%);
+
+    /* Scroll animation */
+    .in-view {
+      transform: scale(1.05);
+      opacity: 1;
     }
-    .background.pink {
-      background: radial-gradient(circle, #F09FF1 34%, #D83CB1 100%);
-    }
-    .donut-container {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2;
-      animation: rotate 20s linear infinite;
-    }
-    .donut-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .heading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3.5rem;
-      color: white;
-      z-index: 1; /* Pehle background -> phir heading -> phir donut */
-      text-align: center;
-      width: 100%;
-      pointer-events: none;
-    }
-    .donut.small-top, .donut.small-bottom {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-    }
-    .donut.small-top {
-      top: -5%;
-    }
-    .donut.small-bottom {
-      top: 90%;
-    }
-    .decorations {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .decorations span {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.6);
-      animation: float 6s ease-in-out infinite;
-    }
-    .decorations span:nth-child(1) {
-      top: 10%;
-      left: 5%;
-    }
-    .decorations span:nth-child(2) {
-      top: 30%;
-      right: 10%;
-    }
-    .decorations span:nth-child(3) {
-      bottom: 20%;
-      left: 15%;
-    }
-    .decorations span:nth-child(4) {
-      bottom: 5%;
-      right: 20%;
-    }
-    @keyframes rotate {
-      from { transform: translate(-50%, -50%) rotate(0deg);}
-      to { transform: translate(-50%, -50%) rotate(360deg);}
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0);}
-      50% { transform: translateY(-20px);}
+
+    .out-view {
+      transform: scale(0.95);
+      opacity: 0.8;
     }
   </style>
 </head>
 
 <body>
 
-<!-- Section 1 -->
-<section>
-  <div class="background"></div>
-  <div class="decorations">
-    <span></span><span></span><span></span><span></span>
+  <div class="frame out-view" style="background-image: url('Frame 1.png');">
+    <div class="overlay"></div>
   </div>
-  <div class="heading">BLUEBERRY</div>
-  <div class="donut-container">
-    <img src="blueberry.png" alt="Purple Donut">
-  </div>
-  <img class="donut small-bottom" src="apple.png" alt="Small Donut Bottom">
-</section>
 
-<!-- Section 2 -->
-<section>
-  <div class="background green"></div>
-  <div class="decorations">
-    <span></span><span></span><span></span><span></span>
+  <div class="frame out-view" style="background-image: url('Frame 2.png');">
+    <div class="overlay"></div>
   </div>
-  <div class="heading">GREEN APPLE</div>
-  <div class="donut-container">
-    <img src="apple.png" alt="Green Donut">
-  </div>
-  <img class="donut small-top" src="blueberry.png" alt="Small Donut Top">
-  <img class="donut small-bottom" src="strawberry.png" alt="Small Donut Bottom">
-</section>
 
-<!-- Section 3 -->
-<section>
-  <div class="background pink"></div>
-  <div class="decorations">
-    <span></span><span></span><span></span><span></span>
+  <div class="frame out-view" style="background-image: url('Frame 3.png');">
+    <div class="overlay"></div>
   </div>
-  <div class="heading">STRAWBERRY</div>
-  <div class="donut-container">
-    <img src="strawberry.png" alt="Pink Donut">
-  </div>
-  <img class="donut small-top" src="apple.png" alt="Small Donut Top">
-  <img class="donut small-bottom" src="bannana.png" alt="Small Donut Bottom">
-</section>
+
+  <script>
+    const frames = document.querySelectorAll('.frame');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          entry.target.classList.remove('out-view');
+        } else {
+          entry.target.classList.remove('in-view');
+          entry.target.classList.add('out-view');
+        }
+      });
+    }, {
+      threshold: 0.5
+    });
+
+    frames.forEach(frame => {
+      observer.observe(frame);
+    });
+  </script>
 
 </body>
 </html>
